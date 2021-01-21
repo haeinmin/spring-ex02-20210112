@@ -17,20 +17,41 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
-$(document).ready(function() {
-	var result = '${result}';
-	checkModal(result);
-	
-	function checkModal(result) {
-		if (result === '') {
-			return;
+	$(document).ready(function() {
+		var result = '${result}';
+		var message = '${message}';
+
+		//checkModal(result);
+		checkModal2(message);
+
+		history.replaceState({}, null, null);
+
+		function checkModal2(message) {
+			if (message && history.state == null) {
+				$("#myModal .modal-body p").html(message);
+				$("#myModal").modal("show");
+			}
 		}
-		if (parseInt(result)>0) {
-			$("#myModal .modal-body p").html("게시글 "+result+"번이 등록되었습니다.");
-			$("#myModal").modal("show");
-		}		
-	}
-});
+		
+		var actionForm = $("#actionForm");
+		$(".pagination a").click(function(e) {
+			e.preventDefault();
+			actionForm.find("[name='pageNum']").val($(this).attr('href'));
+			actionForm.submit();
+		});
+	});
+
+	/*	function checkModal(result) {
+	 if (result === '' || history.state) {
+	 return;
+	 }
+	 if (parseInt(result)>0) {
+	 $("#myModal .modal-body p").html("게시글 "+result+"번이 등록되었습니다.");
+	 }		
+	 $("#myModal").modal("show");
+	 }
+	 });
+	 */
 </script>
 <title>Insert title here</title>
 </head>
@@ -52,7 +73,14 @@ $(document).ready(function() {
 					<c:forEach items="${list}" var="board">
 						<tr>
 							<td>${board.bno}</td>
-							<td><c:out value="${board.title}"></c:out></td>
+							<td>
+							<c:url value="/board/get" var="boardLink">
+								<c:param value="${board.bno }" name="bno" />
+								<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
+								<c:param value="${pageMaker.cri.amount }" name="amount" />
+							</c:url>
+							<a href="${boardLink }"><c:out
+										value="${board.title}"></c:out></a></td>
 							<td><c:out value="${board.writer}"></c:out></td>
 							<td><fmt:formatDate pattern="yyyy-MM-dd"
 									value="${board.regDate}"></fmt:formatDate></td>
@@ -75,7 +103,7 @@ $(document).ready(function() {
 					</button>
 				</div>
 				<div class="modal-body">
-					<p>게시물이 등록되었습니다.</p>
+					<p>처리가 완료되었습니다.</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -84,5 +112,54 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
+<div class="container-sm mt-3">
+	<div class="row justify-content-center">
+		<nav aria-label="Page navigation example">
+		  <ul class="pagination">
+		  
+		  	<c:if test="${pageMaker.prev }" >
+		  		<c:url value="/board/list" var="prevLink">
+		  		<c:param value="${pageMaker.startPage -1 }" name="pageNum" />
+		  		<c:param value="${pageMaker.cri.amount }" name="amount" />
+		  		</c:url>
+			    <li class="page-item">
+			   <!-- <a class="page-link" href="${prevLink }">Previous</a> -->
+			    <a class="page-link" href="${pageMaker.startPage-1 }">Previous</a>
+			    </li>
+		  	</c:if>
+		    
+		    <c:forEach var="num" begin="${pageMaker.startPage }"
+		    					 end="${pageMaker.endPage }">
+		    	<c:url value="/board/list" var="pageLink">
+		    	<c:param name="pageNum" value="${num }" />
+		    	<c:param value="${pageMaker.cri.amount }" name="amount" />
+		    	</c:url>
+		    	<li class="page-item ${pageMaker.cri.pageNum eq num ? 'active' : '' }">
+		    	<!-- <a class="page-link" href="${pageLink }">${num }</a> -->
+		    	<a class="page-link" href="${num }">${num }</a>
+		    	</li>
+		    </c:forEach>
+		    
+		    <c:if test="${pageMaker.next }">
+		    <c:url value="/board/list" var="nextLink">
+		  		<c:param value="${pageMaker.endPage+1 }" name="pageNum" />
+		  		<c:param value="${pageMaker.cri.amount }" name="amount" />
+		  		</c:url>
+			    <li class="page-item">
+			<!-- <a class="page-link" href="${nextLink}">Next</a> -->
+				<a class="page-link" href="${pageMaker.endPage+1 }">Next</a>
+			    </li>
+		    </c:if>
+		  </ul>
+		</nav>
+	</div>
+</div>
+<div class="d-none">
+	<form id="actionForm" action="${root }/board/list" >
+		<input name="pageNum" value="${pageMaker.cri.pageNum }" />
+		<input name="amount" value="${pageMaker.cri.amount }"/>
+		<input type="submit" />
+	</form>
+</div>
 </body>
 </html>

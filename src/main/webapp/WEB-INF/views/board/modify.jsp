@@ -16,7 +16,16 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
+<script>
+$(document).ready(function() {
+	$("#remove-btn").click(function(e) {
+		e.preventDefault();
+		//change action attribute value of #modify-form
+		$("#modify-form").attr("action", "${root}/board/remove");
+		$("#modify-form").submit();
+	});
+});
+</script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -25,32 +34,37 @@
 		<div class="row">
 			<div class="col-12 col-sm-6 offset-sm-3">
 				<!-- responsive web design according to the size of the window -->
-				<h1>게시물 작성</h1>
+				<h1>게시물 수정</h1>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-12 col-sm-6 offset-sm-3">
 				<!--  <form action="${pageContext.request.contextPath }/board/register">  경로가 같은 경우 action생략해도 됨  -->
-				<form method="post">
+				<form id="modify-form" method="post" action="${root}/board/modify">
+				<div class="form-group">
+					<label for="input3">번호</label> <input class="form-control"
+						name="bno" type="text" readonly value="${board.bno }" />
+				</div>
 					<div class="form-group">
 						<label for="input1">Title</label> <input type="text" name="title"
-							class="form-control" id="input1" placeholder="제목을 입력하세요">
+							class="form-control" id="input1" value='<c:out value="${board.title }"/>'>
 					</div>
 
 					<div class="form-group">
 						<label for="textarea1">Content</label>
 						<textarea class="form-control" id="textarea1" rows="3"
-							name="content"></textarea>
+							name="content"><c:out value="${board.content }"></c:out></textarea>
 					</div>
 
 					<div class="form-group">
-						<label for="input2">Writer</label> <input name="writer"
+						<label for="input2">Writer</label> <input readonly name="writer"
 							type="text" class="form-control" id="input2"
-							placeholder="이름을 입력하세요">
+							value='<c:out value="${board.writer }" />'>
 					</div>
-
-					<button type="submit" class="btn btn-primary">Submit</button>
-
+					<input hidden value="${cri.pageNum }" name="pageNum" />
+					<input hidden value="${cri.amount }" name="amount" />
+					<button type="submit" class="btn btn-primary">수정</button>
+					<button id="remove-btn" type="submit" class="btn btn-danger">삭제</button>
 
 				</form>
 

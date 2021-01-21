@@ -59,7 +59,7 @@ public class BoardControllerTests {
 		 * result.andReturn(); ModelAndView mv = rs.getModelAndView();
 		 * log.info(mv.getView()); log.info(mv.getModel().get("list"));
 		 * 
-		 * 아래와 같은 코
+		 * 아래와 같은 code
 		 */
 		Object o = mockMvc.perform(MockMvcRequestBuilders.get("/board/list")).andReturn().getModelAndView().getModel()
 				.get("list");
@@ -68,6 +68,7 @@ public class BoardControllerTests {
 		assertTrue(o instanceof List);
 		assertNotEquals(((List) o).size(), 0);
 	}
+
 
 	@Test
 	public void testRegister() throws Exception {
@@ -151,6 +152,18 @@ public class BoardControllerTests {
 		assertEquals("redirect:/board/list", viewName);
 		
 		assertEquals("success", result.getFlashMap().get("result"));
+	}
+	
+	@Test
+	public void testListPaging() throws Exception {
+		MvcResult res = mockMvc.perform(MockMvcRequestBuilders.get("/board/list")
+				.param("pageNum", "2")
+				.param("amount", "10"))
+				.andReturn();
+		Map<String, Object> model = res.getModelAndView().getModel();
+		List list = (List) model.get("list");
+		
+		assertEquals(10, list.size());
 	}
 
 }
