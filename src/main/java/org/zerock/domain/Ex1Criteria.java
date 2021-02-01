@@ -10,6 +10,6 @@ public class Ex1Criteria {
 	private String type;
 	private int bno;
 	private String keyword;
-	private List<String> myList;
+	private List<String> mylist;
 	private Map<String, String> mymap;
 }

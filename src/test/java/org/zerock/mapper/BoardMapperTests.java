@@ -137,4 +137,58 @@ public class BoardMapperTests {
 		list = mapper.getListWithPaging(cri);
 		list.forEach(board -> log.info("번호: " + board.getBno()));
 	}
+	
+	@Test
+	public void testSearch1() {
+		Criteria cri = new Criteria();
+		cri.setType("T");
+		cri.setKeyword("테스트");
+		
+		mapper.getListWithPaging(cri);
+	}
+	
+	@Test
+	public void testSearch2() {
+		Criteria cri = new Criteria();
+		cri.setType("C");
+		cri.setKeyword("테스트");
+		
+		mapper.getListWithPaging(cri);
+	}
+	
+	@Test
+	public void testSearch3() {
+		Criteria cri = new Criteria();
+		cri.setType("W");
+		cri.setKeyword("테스트");
+		
+		mapper.getListWithPaging(cri);
+	}
+	
+	@Test
+	public void testSearch4() {
+		Criteria cri = new Criteria();
+		cri.setType("TC");
+		cri.setKeyword("테스트");
+		
+		mapper.getListWithPaging(cri);
+	}
+	
+	@Test
+	public void testSearch5() {
+		Criteria cri = new Criteria();
+		cri.setType("TWC");
+		cri.setKeyword("테스트");
+		
+		mapper.getListWithPaging(cri);
+	}
+	
+	@Test
+	public void testSearch6() {
+		Criteria cri = new Criteria();
+		cri.setType("TW");
+		cri.setKeyword("테스트");
+		
+		mapper.getListWithPaging(cri);
+	}
 }

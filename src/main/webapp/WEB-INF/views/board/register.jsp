@@ -23,13 +23,13 @@
 	<u:navbar></u:navbar>
 	<div class="container-sm mb-3">
 		<div class="row">
-			<div class="col-12 col-sm-6 offset-sm-3">
+			<div class="col-12 col-lg-6 offset-lg-3">
 				<!-- responsive web design according to the size of the window -->
 				<h1>게시물 작성</h1>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-12 col-sm-6 offset-sm-3">
+			<div class="col-12 col-lg-6 offset-lg-3">
 				<!--  <form action="${pageContext.request.contextPath }/board/register">  경로가 같은 경우 action생략해도 됨  -->
 				<form method="post">
 					<div class="form-group">
